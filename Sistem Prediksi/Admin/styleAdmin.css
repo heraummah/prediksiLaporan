@@ -1,0 +1,63 @@
+body.login-page {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .login-container {
+    background-color: #f4f8ff;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .login-title {
+    text-align: center;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 24px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 8px;
+    color: #0253BE;
+    font-weight: 500;
+  }
+  
+  input {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid #d2d6dc;
+    font-size: 1rem;
+  }
+  
+  .login-btn {
+    width: 100%;
+    background-color: #FF7350;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 9999px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 12px;
+  }
+  
+  .login-btn:hover {
+    background-color: #ff5e33;
+  }
+  
