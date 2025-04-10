@@ -1,0 +1,55 @@
+/* Warna dasar tema */
+:root {
+    --primary-color: #0253BE;
+    --accent-color: #4AB4FF;
+    --bg-light: #ffffff;
+    --bg-gray: #f8f9fa;
+  }
+  
+  body {
+    background-color: var(--bg-light);
+    font-family: Arial, sans-serif;
+  }
+  
+  h2 {
+    color: var(--primary-color);
+  }
+  
+  .table thead {
+    background-color: var(--primary-color);
+    color: white;
+  }
+  
+  .table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: var(--accent-color);
+    color: black;
+  }
+  
+  .table-hover tbody tr:hover {
+    background-color: rgba(2, 83, 190, 0.1);
+  }
+  
+  .dataTables_wrapper .dataTables_filter input,
+  .dataTables_wrapper .dataTables_length select {
+    border: 1px solid var(--primary-color);
+    border-radius: 0.25rem;
+  }
+  
+  .dataTables_wrapper .dataTables_paginate .paginate_button {
+    color: var(--primary-color) !important;
+  }
+  
+  .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+    border: none;
+  }
+  
+  tfoot select {
+    width: 100%;
+    font-size: 0.85rem;
+    border: 1px solid var(--primary-color);
+    border-radius: 4px;
+    padding: 2px;
+  }
+  

@@ -1,0 +1,56 @@
+/* Warna background umum */
+body {
+    background-color: #f8f9fa;
+  }
+  
+  /* Judul */
+  h2 {
+    color: #000000;
+    font-weight: bold;
+  }
+  
+  /* Tabel DataTables */
+  table.dataTable {
+    border: 1px solid #0253BE;
+  }
+  
+  table.dataTable thead {
+    background-color: #0253BE;
+    color: white;
+  }
+  
+  table.dataTable tfoot {
+    background-color: #4AB4FF;
+  }
+  
+  table.dataTable tbody tr {
+    background-color: white;
+    color: #000;
+  }
+  
+  table.dataTable tbody tr:hover {
+    background-color: #4AB4FF;
+    color: white;
+  }
+  
+  /* Tombol export */
+  .dt-buttons .btn {
+    background-color: #0253BE;
+    color: white;
+    border: none;
+    margin-right: 5px;
+  }
+  
+  .dt-buttons .btn:hover {
+    background-color: #4AB4FF;
+  }
+  
+  /* Filter dropdown di footer */
+  tfoot select {
+    width: 100%;
+    font-size: 0.85rem;
+    padding: 2px;
+    border-radius: 5px;
+    border: 1px solid #0253BE;
+  }
+  
