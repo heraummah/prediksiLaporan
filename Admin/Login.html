@@ -1,59 +1,91 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .login-container {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            text-align: center;
-        }
-        h2 {
-            margin-bottom: 20px;
-        }
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .btn-login {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px;
-            width: 100%;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .btn-login:hover {
-            background-color: #0056b3;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Admin</title>
+  <link rel="stylesheet" href="styleAdmin.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
 </head>
-<body>
-    <div class="login-container">
-        <h2>Admin Login</h2>
-        <form action="adminDashboard.html" method="POST">
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit" class="btn-login">Login</button>
-        </form>
-    </div>
+<body class="login-page">
+  <div class="login-container">
+    <h2 class="login-title">Login Admin</h2>
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" required />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" required />
+      </div>
+      <button type="submit" class="login-btn">Login</button>
+    </form>
+  </div>
+
+  <!-- SweetAlert -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- Firebase & Login Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyChiFCS81APiDS4si0ihl6pmndmaps8n-I",
+      authDomain: "website-prediksi-laporan.firebaseapp.com",
+      projectId: "website-prediksi-laporan",
+      storageBucket: "website-prediksi-laporan.firebasestorage.app",
+      messagingSenderId: "239617567465",
+      appId: "1:239617567465:web:c6a585260889e7e3411e78",
+      measurementId: "G-E1JW1GSGW5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth(app);
+
+    // GANTI DENGAN UID ADMIN KAMU!
+    const ADMIN_UID = "quTtVs8tqVZtThpSqxjjCM6Fazh2";
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          if (user.uid === ADMIN_UID) {
+            localStorage.setItem("adminLoggedIn", true);
+            Swal.fire({
+              icon: 'success',
+              title: 'Login Berhasil',
+              text: 'Selamat datang kembali!',
+              confirmButtonColor: '#0253BE'
+            }).then(() => {
+              window.location.href = "../index.html"; // ganti sesuai path halaman utama kamu
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Akses Ditolak',
+              text: 'Anda bukan admin.',
+              confirmButtonColor: '#FF7350'
+            });
+          }
+        })
+        .catch(error => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Gagal Login',
+            text: error.message,
+            confirmButtonColor: '#FF7350'
+          });
+        });
+    });
+  </script>
 </body>
 </html>
