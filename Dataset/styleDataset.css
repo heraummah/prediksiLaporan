@@ -1,55 +1,95 @@
-/* Warna dasar tema */
-:root {
-    --primary-color: #0253BE;
-    --accent-color: #4AB4FF;
-    --bg-light: #ffffff;
-    --bg-gray: #f8f9fa;
+/* Halaman */
+body {
+    background-color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 2rem;
+    color: #0a0a0a;
   }
   
-  body {
-    background-color: var(--bg-light);
-    font-family: Arial, sans-serif;
-  }
-  
+  /* Judul */
   h2 {
-    color: var(--primary-color);
+    color: #000000; /* warna hitam */
+    font-weight: 700; /* bold */
+    text-align: center;
+    margin-bottom: 2rem;
   }
   
-  .table thead {
-    background-color: var(--primary-color);
-    color: white;
+  /* Tabel DataTables */
+  table.dataTable {
+    width: 100%;
+    border-collapse: collapse !important;
+    background-color: transparent;
   }
   
-  .table-striped > tbody > tr:nth-of-type(odd) {
-    background-color: var(--accent-color);
-    color: black;
-  }
-  
-  .table-hover tbody tr:hover {
-    background-color: rgba(2, 83, 190, 0.1);
-  }
-  
-  .dataTables_wrapper .dataTables_filter input,
-  .dataTables_wrapper .dataTables_length select {
-    border: 1px solid var(--primary-color);
-    border-radius: 0.25rem;
-  }
-  
-  .dataTables_wrapper .dataTables_paginate .paginate_button {
-    color: var(--primary-color) !important;
-  }
-  
-  .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-    background-color: var(--primary-color) !important;
+  /* Header tabel */
+  table.dataTable thead {
+    background-color: #0253BE !important;
     color: white !important;
-    border: none;
   }
   
+  table.dataTable thead th {
+    border: none !important;
+    background-color: #0253BE !important;
+    color: white !important;
+  }
+  
+  /* Body tabel: full biru muda */
+  table.dataTable tbody tr {
+    background-color: #d0e7ff !important;
+    color: #000 !important;
+    border: none !important;
+  }
+  
+  table.dataTable tbody tr:nth-child(even) {
+    background-color: #b1d5f8 !important;
+  }
+  
+  table.dataTable tbody td {
+    border: none !important;
+  }
+  
+  /* Hover efek */
+  table.dataTable tbody tr:hover {
+    background-color: #4AB4FF !important;
+    color: white !important;
+  }
+  
+  /* Footer tabel */
+  table.dataTable tfoot {
+    background-color: #4AB4FF !important;
+    color: white !important;
+  }
+  
+  table.dataTable tfoot th {
+    border: none !important;
+  }
+  
+  /* Tombol Export */
+  .dt-buttons .btn {
+    background-color: #FF7350 !important;
+    color: white !important;
+    border-radius: 30px !important;
+    padding: 8px 20px !important;
+    margin-right: 10px;
+    border: none !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    font-weight: 600;
+  }
+  
+  .dt-buttons .btn:hover {
+    background-color: #4AB4FF !important;
+    color: white !important;
+  }
+  
+  /* Filter dropdown */
   tfoot select {
     width: 100%;
     font-size: 0.85rem;
-    border: 1px solid var(--primary-color);
-    border-radius: 4px;
-    padding: 2px;
+    padding: 5px;
+    border-radius: 8px;
+    border: 1px solid #0253BE;
+    background-color: white;
+    color: #0253BE;
   }
   
