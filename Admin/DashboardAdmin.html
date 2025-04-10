@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard Admin</title>
   <link rel="stylesheet" href="styledashboardAdmin.css" />
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
@@ -10,10 +10,19 @@
   <link href="https://fonts.cdnfonts.com/css/jakarta-sans" rel="stylesheet">
 </head>
 <body>
-  <div class="logout-container">
-    <a href="../index.html"></a>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <img src="../Landing/LogoJSC.png" alt="Logo">
+    
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link">Beranda</a>
+    </div>
+
+    <button class="logout-button" id="logoutButton">Logout</button>
   </div>
 
+  <!-- Content -->
   <div class="admin-container">
     <h2>Data Laporan Masuk</h2>
     <table id="adminTable" class="display">
@@ -34,9 +43,41 @@
     </table>
   </div>
 
+  <!-- JS Libraries -->
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
   <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- Firebase & Logout Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyChiFCS81APiDS4si0ihl6pmndmaps8n-I",
+      authDomain: "website-prediksi-laporan.firebaseapp.com",
+      projectId: "website-prediksi-laporan",
+      storageBucket: "website-prediksi-laporan.firebasestorage.app",
+      messagingSenderId: "239617567465",
+      appId: "1:239617567465:web:c6a585260889e7e3411e78",
+      measurementId: "G-E1JW1GSGW5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    document.getElementById("logoutButton").addEventListener("click", () => {
+      signOut(auth)
+        .then(() => {
+          localStorage.removeItem("adminLoggedIn");
+          window.location.href = "../index.html";
+        })
+        .catch((error) => {
+          console.error("Logout gagal:", error);
+        });
+    });
+  </script>
+
   <script src="scriptDashboardAdmin.js"></script>
 </body>
 </html>
