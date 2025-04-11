@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     laporanContoh.forEach(item => {
       const row = document.createElement('tr');
       row.innerHTML = `
+        <td>${item.masuk}</td>
         <td>${item.nama}</td>
         <td>${item.jenis}</td>
         <td>${item.kota}</td>

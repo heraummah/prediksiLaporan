@@ -7,18 +7,31 @@ document.addEventListener('DOMContentLoaded', () => {
   form.addEventListener('submit', function (e) {
     e.preventDefault();
 
-    const scriptURL = "https://script.google.com/macros/s/AKfycbwSqaRhCzzxKGrJ8mltwpzjTmcYyVlfakwNzApyNfDcJGzBWkg4nzIiu2yDzm-QNAAsaA/exec";
+    const scriptURL = "https://script.google.com/macros/s/AKfycbyOAMx5nnROfFgAPRZMEyEzlhYliu1FtRqaVRDhs2dnXe0U3_uUBCO2HkMSOsf9TqJbbw/exec";
+
     const formData = new FormData(form);
+    
+    // Jika hanya ingin kirim data TEXT-nya saja:
+    const plainData = new URLSearchParams();
+    formData.forEach((value, key) => {
+      if (key !== "bukti") {
+        plainData.append(key, value);
+      }
+    });
 
     fetch(scriptURL, {
       method: 'POST',
-      body: formData
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: plainData
     })
-      .then(response => {
+      .then(response => response.json())
+      .then(data => {
         Swal.fire({
           icon: 'success',
           title: 'Laporan Berhasil Dikirim!',
-          text: 'Terima kasih atas partisipasi Anda.',
+          text: data.message || 'Terima kasih atas partisipasi Anda.',
           confirmButtonColor: '#0253BE'
         });
         form.reset();
