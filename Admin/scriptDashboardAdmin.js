@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <td>${item.jenis}</td>
         <td>${item.kota}</td>
         <td>${item.alamat}</td>
+        <td>${item.laporan}</td>
         <td>${item.tanggal}</td>
         <td><a href="${item.bukti}" target="_blank">Lihat</a></td>
         <td><button class="btn-hapus">Hapus</button></td>

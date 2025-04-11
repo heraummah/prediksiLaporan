@@ -32,6 +32,7 @@
           <th>Kota Administrasi</th>
           <th>Alamat Lengkap</th>
           <th>Tanggal</th>
+          <th>Laporan</th>
           <th>Bukti</th>
           <th>Aksi</th>
         </tr>
@@ -99,7 +100,8 @@
           const kota = row[3] || "-";
           const alamat = row[4] || "-";
           const tanggal = row[5] || "-";
-          const bukti = row[6] || "#";
+          const laporan = row[6] || "-";
+          const bukti = row[7] || "#";
 
           const tr = document.createElement("tr");
           tr.innerHTML = `
@@ -109,6 +111,7 @@
             <td>${kota}</td>
             <td>${alamat}</td>
             <td>${tanggal}</td>
+            <td>${laporan}</td>
             <td><a href="${bukti}" target="_blank">Lihat</a></td>
             <td>
               <button class="btn-aksi" onclick="Swal.fire('Detail laporan belum diimplementasikan')">
