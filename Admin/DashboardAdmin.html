@@ -79,57 +79,57 @@
   </script>
 
   <!-- Script Fetch Data dari Google Sheets -->
-  <script>
-    // Ganti ini dengan API key dan Spreadsheet ID kamu
-    const apiKey = "AIzaSyBxkZK0LMYDIFWm3DW0Jovdkd6PlCUfovk"; // <-- ganti di sini
-    const spreadsheetId = "1Ex_--mc8gL2-UWmkxPPXVtgCZXQxXI-Bec9_I21x8Ts"; // <-- dan di sini
-    const range = "Sheet1!A2:G"; // mulai dari baris kedua (tanpa header)
+  <!-- hanya bagian JS fetch data yang perlu diubah -->
+<script>
+  // Ganti ini dengan API key dan Spreadsheet ID kamu
+  const apiKey = "AIzaSyBxkZK0LMYDIFWm3DW0Jovdkd6PlCUfovk";
+  const spreadsheetId = "1Ex_--mc8gL2-UWmkxPPXVtgCZXQxXI-Bec9_I21x8Ts";
+  const range = "Sheet1!A2:H";
 
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?key=${apiKey}`;
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?key=${apiKey}`;
 
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        const rows = data.values;
-        const tableBody = document.querySelector("#adminTable tbody");
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      const rows = data.values;
+      const tableBody = document.querySelector("#adminTable tbody");
 
-        rows.forEach(row => {
-          const masuk = row[0] || "-";
-          const nama = row[1] || "-";
-          const jenisLaporan = row[2] || "-";
-          const kota = row[3] || "-";
-          const alamat = row[4] || "-";
-          const tanggal = row[5] || "-";
-          const laporan = row[6] || "-";
-          const bukti = row[7] || "#";
+      rows.forEach(row => {
+        const masuk = row[0] || "-";
+        const nama = row[1] || "-";
+        const jenisLaporan = row[2] || "-";
+        const kota = row[3] || "-";
+        const alamat = row[4] || "-";
+        const tanggal = row[5] || "-";
+        const laporan = row[6] || "-";
+        const bukti = row[7] || "#";
 
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${masuk}</td>
-            <td>${nama}</td>
-            <td>${jenisLaporan}</td>
-            <td>${kota}</td>
-            <td>${alamat}</td>
-            <td>${tanggal}</td>
-            <td>${laporan}</td>
-            <td><a href="${bukti}" target="_blank">Lihat</a></td>
-            <td>
-              <button class="btn-aksi" onclick="Swal.fire('Detail laporan belum diimplementasikan')">
-                Detail
-              </button>
-            </td>
-          `;
-          tableBody.appendChild(tr);
-        });
-
-        // Aktifkan DataTable setelah data dimasukkan
-        $('#adminTable').DataTable();
-      })
-      .catch(error => {
-        console.error("Gagal mengambil data dari Google Sheets:", error);
-        Swal.fire("Oops!", "Data gagal dimuat dari Spreadsheet.", "error");
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${masuk}</td>
+          <td>${nama}</td>
+          <td>${jenisLaporan}</td>
+          <td>${kota}</td>
+          <td>${alamat}</td>
+          <td>${tanggal}</td>
+          <td>${laporan}</td>
+          <td><a href="${bukti}" target="_blank">Lihat</a></td>
+          <td>
+            <button class="btn-aksi btn-edit">Edit</button>
+            <button class="btn-aksi btn-hapus">Hapus</button>
+          </td>
+        `;
+        tableBody.appendChild(tr);
       });
-  </script>
+
+      $('#adminTable').DataTable();
+    })
+    .catch(error => {
+      console.error("Gagal mengambil data dari Google Sheets:", error);
+      Swal.fire("Oops!", "Data gagal dimuat dari Spreadsheet.", "error");
+    });
+</script>
+
 
 </body>
 </html>

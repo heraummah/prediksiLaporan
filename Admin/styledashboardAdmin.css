@@ -1,96 +1,111 @@
 /* --- GLOBAL --- */
 body {
-    font-family: 'Jakarta Sans', sans-serif;
-    background-color: #ffffff;
-    margin: 0;
-    padding: 2rem;
-  }
-  
-  /* --- NAVBAR --- */
-  .navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 24px;
-    background-color: #0253BE;
-    color: white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .navbar img {
-    height: 40px;
-  }
-  
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
-  
-  .nav-link {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  .nav-link:hover {
-    text-decoration: underline;
-  }
-  
-  .logout-button {
-    background-color: #FF7350;
-    color: white;
-    border: none;
-    border-radius: 20px;
-    padding: 10px 20px;
-    font-weight: bold;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .logout-button:hover {
-    background-color: #e65b3a;
-    transform: scale(1.05);
-  }
-  
-  /* --- CONTENT --- */
-  h2 {
-    font-weight: bold;
-    color: #000;
-    margin-bottom: 1.5rem;
-  }
-  
-  .admin-container {
-    max-width: 1000px;
-    margin: 2rem auto;
-  }
-  
-  /* --- TABLE STYLING --- */
-  table.dataTable {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  table.dataTable thead {
-    background-color: #0253BE;
-    color: white;
-  }
-  
-  table.dataTable tbody tr {
-    background-color: #e6f0ff;
-    transition: background-color 0.3s ease;
-  }
-  
-  table.dataTable tbody tr:hover {
-    background-color: #d0e8ff;
-  }
-  
-  table.dataTable td,
-  table.dataTable th {
-    border: none;
-    padding: 12px;
-    text-align: left;
-  }
-  
+  font-family: 'Jakarta Sans', sans-serif;
+  background-color: #ffffff;
+  margin: 0;
+  padding: 2rem;
+}
+
+/* --- NAVBAR --- */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background-color: #0253BE;
+  color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar img {
+  height: 40px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.nav-link:hover {
+  text-decoration: underline;
+}
+
+.logout-button {
+  background-color: #FF7350;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.logout-button:hover {
+  background-color: #e65b3a;
+  transform: scale(1.05);
+}
+
+/* --- CONTENT --- */
+h2 {
+  font-weight: bold;
+  color: #000;
+  margin-bottom: 1.5rem;
+}
+
+.admin-container {
+  max-width: 1000px;
+  margin: 2rem auto;
+}
+
+/* --- TABLE STYLING --- */
+table.dataTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table.dataTable thead {
+  background-color: #0253BE;
+  color: white;
+}
+
+table.dataTable tbody tr {
+  background-color: #e6f0ff;
+  transition: background-color 0.3s ease;
+}
+
+table.dataTable tbody tr:hover {
+  background-color: #d0e8ff;
+}
+
+table.dataTable td,
+table.dataTable th {
+  border: none;
+  padding: 12px;
+  text-align: left;
+}
+
+.btn-aksi {
+  background-color: #0253BE;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  margin-right: 5px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-aksi:hover {
+  background-color: #013f91;
+}
