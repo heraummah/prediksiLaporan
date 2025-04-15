@@ -17,7 +17,7 @@
 <body>
   <div class="container">
     <h2>Form Laporan Masyarakat</h2>
-    <form id="laporForm" enctype="multipart/form-data">
+    <form id="laporForm">
       <div class="form-group">
         <label for="nama">Nama Lengkap</label>
         <input type="text" id="nama" name="nama" required />
@@ -56,16 +56,29 @@
       </div>
 
       <div class="form-group">
-        <label for="alamat">Laporan</label>
-        <textarea id="alamat" name="alamat" rows="3" required></textarea>
+        <label for="laporan">Laporan</label>
+        <textarea id="laporan" name="laporan" rows="3" required></textarea>
       </div>
 
       <div class="form-group">
-        <label for="bukti">Bukti (Gambar/File)</label>
-        <input type="file" id="bukti" name="bukti" accept="image/*,.pdf" required />
+        <label for="bukti">Link Bukti (Gambar/File)</label>
+        <input type="url" id="bukti" name="bukti" placeholder="https://drive.google.com/drive/folders/1W_8Ks-dxGizBsYP1mEUKSuN0L7doD2R6?usp=sharing" required />
+        <div class="file-info">
+          <p>Upload gambar/dokumen ke <a href="https://postimages.org/" target="_blank">PostImages</a> atau <a href="https://imgbb.com/" target="_blank">ImgBB</a>, lalu tempel link di sini.</p>
+          <details>
+            <summary>Cara Upload Bukti</summary>
+            <ol>
+              <li>Klik salah satu layanan di atas (PostImages atau ImgBB)</li>
+              <li>Klik "Upload" atau "Start Upload" pada website tersebut</li>
+              <li>Pilih file dari komputer atau smartphone Anda</li>
+              <li>Setelah proses upload selesai, salin link "Direct Link" atau "Image Link"</li>
+              <li>Tempel link tersebut pada kolom di atas</li>
+            </ol>
+          </details>
+        </div>
       </div>
 
-      <button type="submit" class="submit-btn">Kirim Laporan</button>
+      <button type="submit" class="submit-btn" id="submitButton">Kirim Laporan</button>
     </form>
   </div>
 

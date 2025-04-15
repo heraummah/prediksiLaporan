@@ -64,4 +64,40 @@ body {
   .submit-btn:hover {
     background-color: #e35f3d;
   }
+
+  /* Tambahkan style ini ke styleForm.css Anda jika diperlukan */
+
+.file-info {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #666;
+}
+
+.file-info a {
+  color: #0253BE;
+  text-decoration: none;
+}
+
+.file-info a:hover {
+  text-decoration: underline;
+}
+
+details {
+  margin-top: 10px;
+}
+
+summary {
+  cursor: pointer;
+  color: #0253BE;
+  font-weight: 500;
+}
+
+details ol {
+  margin-top: 8px;
+  padding-left: 20px;
+}
+
+details li {
+  margin-bottom: 5px;
+}
   

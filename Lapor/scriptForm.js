@@ -3,20 +3,44 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('tanggal').setAttribute('max', today);
 
   const form = document.getElementById('laporForm');
+  const submitButton = document.getElementById('submitButton');
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-
-    const scriptURL = "https://script.google.com/macros/s/AKfycbxGFBnG9srXpYjIKd1RRYGM1kdUfTwoXyrmSX1K-gqtn8bNs0bE8gl6DZPXAJI6BWjl/exec";
-
-    const formData = new FormData(form);
     
-    // Jika hanya ingin kirim data TEXT-nya saja:
+    // Validasi URL bukti
+    const buktiUrl = document.getElementById('bukti').value.trim();
+    if (!isValidUrl(buktiUrl)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'URL Tidak Valid',
+        text: 'Mohon masukkan URL yang valid untuk bukti.',
+        confirmButtonColor: '#d33'
+      });
+      return;
+    }
+    
+    // Disable tombol submit untuk mencegah klik ganda
+    submitButton.disabled = true;
+    submitButton.textContent = 'Mengirim...';
+    
+    // Tampilkan loading
+    Swal.fire({
+      title: 'Mengirim laporan...',
+      text: 'Mohon tunggu sebentar',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwH_PY6IVT-qxR09dWk_InEy2j55GqhBd3FGRdtT8fyW6AVnlI120vvwSfEqLqmGNQWvw/exec";
+
+    // Kumpulkan semua data form
+    const formData = new FormData(form);
     const plainData = new URLSearchParams();
     formData.forEach((value, key) => {
-      if (key !== "bukti") {
-        plainData.append(key, value);
-      }
+      plainData.append(key, value);
     });
 
     fetch(scriptURL, {
@@ -28,6 +52,10 @@ document.addEventListener('DOMContentLoaded', () => {
     })
       .then(response => response.json())
       .then(data => {
+        // Kembalikan tombol submit ke keadaan awal
+        submitButton.disabled = false;
+        submitButton.textContent = 'Kirim Laporan';
+        
         Swal.fire({
           icon: 'success',
           title: 'Laporan Berhasil Dikirim!',
@@ -37,6 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
         form.reset();
       })
       .catch(error => {
+        // Kembalikan tombol submit ke keadaan awal
+        submitButton.disabled = false;
+        submitButton.textContent = 'Kirim Laporan';
+        
         console.error('Error!', error.message);
         Swal.fire({
           icon: 'error',
@@ -46,4 +78,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       });
   });
+  
+  // Fungsi untuk validasi URL
+  function isValidUrl(string) {
+    try {
+      new URL(string);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
 });

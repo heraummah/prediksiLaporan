@@ -2,8 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Ganti ini dengan API key dan Spreadsheet ID kamu
   const apiKey = "AIzaSyBxkZK0LMYDIFWm3DW0Jovdkd6PlCUfovk";
   const spreadsheetId = "1Ex_--mc8gL2-UWmkxPPXVtgCZXQxXI-Bec9_I21x8Ts";
-  const range = "Sheet1!A2:J"; // Update range untuk mencakup kolom ID
-  const scriptURL = "https://script.google.com/macros/s/AKfycbxGFBnG9srXpYjIKd1RRYGM1kdUfTwoXyrmSX1K-gqtn8bNs0bE8gl6DZPXAJI6BWjl/exec"; // Ganti dengan ID script Google Apps Script Anda
+  const range = "Sheet1!A2:K"; // Update range untuk mencakup kolom status verifikasi
+  const scriptURL = "https://script.google.com/macros/s/AKfycby8hIZouP23nPvp3ZPkV_FjDEMAWh_Is0foVmjrgT0RPvDLQfb71A4MVU1Ox2I9wrmHzA/exec"; // Ganti dengan ID script Google Apps Script Anda
 
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${range}?key=${apiKey}`;
   let dataTable;
@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const tanggal = row[6] || "-";      // Tanggal (kolom G)
           const laporan = row[7] || "-";      // Laporan (kolom H)
           const bukti = row[8] || "#";        // Bukti (kolom I)
+          const status = row[9] || "Menunggu"; // Status verifikasi (kolom J)
 
           const tr = document.createElement("tr");
           tr.innerHTML = `
@@ -39,7 +40,15 @@ document.addEventListener('DOMContentLoaded', () => {
             <td>${laporan}</td>
             <td><a href="${bukti}" target="_blank">Lihat</a></td>
             <td>
-              <button class="btn-aksi" data-id="${id}">Hapus</button>
+              <span class="status-badge status-${status.toLowerCase().replace(/\s+/g, '-')}">${status}</span>
+            </td>
+            <td>
+              <div class="btn-group">
+                ${status === "Menunggu" ? `
+                  <button class="btn-verifikasi" data-id="${id}">Verifikasi</button>
+                  <button class="btn-tolak" data-id="${id}">Tolak</button>
+                ` : ``}
+              </div>
             </td>
           `;
           tableBody.appendChild(tr);
@@ -48,73 +57,19 @@ document.addEventListener('DOMContentLoaded', () => {
         // Initialize DataTable dengan event delegation
         dataTable = $('#adminTable').DataTable();
         
-        // Gunakan event delegation untuk tombol delete - ini akan bekerja di semua halaman pagination
-        $('#adminTable tbody').on('click', '.btn-aksi', function() {
+        // Event delegation untuk tombol verifikasi
+        $('#adminTable tbody').on('click', '.btn-verifikasi', function() {
           const id = $(this).data('id');
-          
-          Swal.fire({
-            title: 'Yakin ingin menghapus laporan ini?',
-            text: "Data yang dihapus tidak dapat dikembalikan!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#FF7350',
-            cancelButtonColor: '#999',
-            confirmButtonText: 'Ya, Hapus',
-            cancelButtonText: 'Batal'
-          }).then((result) => {
-            if (result.isConfirmed) {
-              // Tampilkan loading
-              Swal.fire({
-                title: 'Menghapus data...',
-                text: 'Mohon tunggu sebentar',
-                allowOutsideClick: false,
-                didOpen: () => {
-                  Swal.showLoading();
-                }
-              });
-              
-              // Kirim permintaan delete ke Google Apps Script
-              const formData = new FormData();
-              formData.append('action', 'delete');
-              formData.append('id', id);
-              
-              fetch(scriptURL, {
-                method: 'POST',
-                body: formData
-              })
-              .then(response => response.json())
-              .then(data => {
-                if (data.status === 'success') {
-                  // Hapus baris dari tabel
-                  const row = $(this).closest('tr');
-                  dataTable.row(row).remove().draw();
-                  
-                  Swal.fire(
-                    'Berhasil!',
-                    'Data telah dihapus.',
-                    'success'
-                  );
-                } else {
-                  Swal.fire(
-                    'Gagal!',
-                    data.message || 'Terjadi kesalahan saat menghapus data.',
-                    'error'
-                  );
-                }
-              })
-              .catch(error => {
-                console.error('Error:', error);
-                Swal.fire(
-                  'Gagal!',
-                  'Terjadi kesalahan saat menghapus data.',
-                  'error'
-                );
-              });
-            }
-          });
+          verifikasiLaporan(id, "Diverifikasi", $(this));
+        });
+        
+        // Event delegation untuk tombol tolak
+        $('#adminTable tbody').on('click', '.btn-tolak', function() {
+          const id = $(this).data('id');
+          verifikasiLaporan(id, "Ditolak", $(this));
         });
       } else {
-        tableBody.innerHTML = '<tr><td colspan="10" class="text-center">Tidak ada data</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="11" class="text-center">Tidak ada data</td></tr>';
         dataTable = $('#adminTable').DataTable();
       }
     })
@@ -123,4 +78,73 @@ document.addEventListener('DOMContentLoaded', () => {
       Swal.fire("Oops!", "Data gagal dimuat dari Spreadsheet.", "error");
       dataTable = $('#adminTable').DataTable();
     });
+  
+  // Fungsi untuk menangani verifikasi/penolakan laporan
+  function verifikasiLaporan(id, status, button) {
+    Swal.fire({
+      title: `Yakin ingin ${status.toLowerCase()} laporan ini?`,
+      text: `Status laporan akan berubah menjadi "${status}"`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: status === "Diverifikasi" ? '#28a745' : '#dc3545',
+      cancelButtonColor: '#999',
+      confirmButtonText: `Ya, ${status.toLowerCase()}`,
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Tampilkan loading
+        Swal.fire({
+          title: `${status} laporan...`,
+          text: 'Mohon tunggu sebentar',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+        
+        // Kirim permintaan verifikasi ke Google Apps Script
+        const formData = new FormData();
+        formData.append('action', 'verify');
+        formData.append('id', id);
+        formData.append('status', status);
+        
+        fetch(scriptURL, {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            // Update tampilan row tanpa reload
+            const row = button.closest('tr');
+            const statusCell = row.find('td:nth-child(10)');
+            const actionCell = row.find('td:nth-child(11)');
+            
+            statusCell.html(`<span class="status-badge status-${status.toLowerCase().replace(/\s+/g, '-')}">${status}</span>`);
+            actionCell.html(`<div class="btn-group"></div>`); // Kosongkan kolom aksi
+            
+            Swal.fire(
+              'Berhasil!',
+              `Laporan berhasil ${status.toLowerCase()}.`,
+              'success'
+            );
+          } else {
+            Swal.fire(
+              'Gagal!',
+              data.message || 'Terjadi kesalahan saat memproses laporan.',
+              'error'
+            );
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          Swal.fire(
+            'Gagal!',
+            'Terjadi kesalahan saat memproses laporan.',
+            'error'
+          );
+        });
+      }
+    });
+  }
 });
