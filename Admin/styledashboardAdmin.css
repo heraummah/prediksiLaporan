@@ -95,7 +95,7 @@ table.dataTable th {
 }
 
 .btn-aksi {
-  background-color: #0253BE;
+  background-color: red;
   color: white;
   border: none;
   border-radius: 6px;
@@ -107,5 +107,5 @@ table.dataTable th {
 }
 
 .btn-aksi:hover {
-  background-color: #013f91;
+  background-color: rgb(255, 71, 71);
 }
