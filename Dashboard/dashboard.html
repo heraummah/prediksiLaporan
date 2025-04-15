@@ -1,45 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analisis Data Laporan</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            justify-content: center; 
-            align-items: center;
-        }
-        .navbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: #4CAF50;
-            padding: 10px 20px;
-        }
-        .navbar .logo {
-            display: flex;
-            align-items: center;
-        }
-        .navbar .logo img {
-            height: 40px;
-            margin-right: 10px;
-        }
-        .navbar h1 {
-            color: white;
-            font-size: 20px;
-            margin: 0;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Analisis</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f2f2f2;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      margin-top: 40px;
+      font-size: 28px;
+      color: #222;
+    }
+
+    .iframe-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 40px auto;
+      overflow: hidden;
+      max-width: 100%;
+    }
+
+    iframe {
+      width: 100%;
+      max-width: 1200px; /* Maksimal lebar iframe */
+      height: 700px;
+      border: none;
+      transform: scale(1);
+      transform-origin: top center;
+    }
+
+    @media (max-width: 1280px) {
+      iframe {
+        transform: scale(0.85);
+      }
+    }
+
+    @media (max-width: 992px) {
+      iframe {
+        transform: scale(0.75);
+      }
+    }
+
+    @media (max-width: 768px) {
+      iframe {
+        transform: scale(0.65);
+      }
+    }
+
+    @media (max-width: 480px) {
+      iframe {
+        transform: scale(0.55);
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="navbar">
-        <div class="logo">
-            <img src="logo.png" alt="Logo">
-            <h1>Analisis Data Laporan Sampah dan Banjir</h1>
-        </div>
-    </div>
-    <iframe width= "1180" height="620" src="https://lookerstudio.google.com/embed/reporting/e35a0ea0-f86f-4264-b301-3977d94d1433/page/broFE" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+  <h1>Dashboard Analisis Laporan Sampah dan Banjir</h1>
+  <div class="iframe-wrapper">
+    <iframe src="https://lookerstudio.google.com/embed/reporting/e35a0ea0-f86f-4264-b301-3977d94d1433/page/broFE" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" allowfullscreen></iframe>
+  </div>
 </body>
 </html>
