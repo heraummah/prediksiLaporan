@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sistem Prediksi Jumlah Laporan Sampah dan Banjir</title>
   <link rel="stylesheet" href="../prediksiLaporan/Landing/styleLandingPage.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -46,46 +48,172 @@
 </head>
 
 <body>
-  <div class="banner">
+  <header class="banner">
     <div class="navbar">
-      <img src="../prediksiLaporan/Landing/LogoJSC.png" alt="Logo">
+      <div class="logo-container">
+        <img src="../prediksiLaporan/Landing/LogoJSC.png" alt="Logo" class="logo-img">
+      </div>
       <div class="nav-links">
-        <a href="../prediksiLaporan/Dashboard/dashboard.html" class="nav-link">Dashboard</a>
-        <a href="../prediksiLaporan/Lapor/Form.html" class="nav-link">Lapor</a>
-        <a href="../prediksiLaporan/Dataset/DataKejadianBanjir.html" class="nav-link">Kejadian Banjir</a>
-        <a href="../prediksiLaporan/Admin/Login.html" id="loginLink" class="nav-link button-login">Login</a>
-        <a href="../prediksiLaporan/Admin/DashboardAdmin.html" id="adminLink" class="nav-link" style="display: none;">Laporan Masuk</a>
+        <a href="../prediksiLaporan/Dashboard/dashboard.html" class="nav-link"><i class="fas fa-chart-line"></i> Dashboard</a>
+        <a href="../prediksiLaporan/Lapor/Form.html" class="nav-link"><i class="fas fa-exclamation-circle"></i> Lapor</a>
+        <a href="../prediksiLaporan/Dataset/DataKejadianBanjir.html" class="nav-link"><i class="fas fa-water"></i> Kejadian Banjir</a>
+        <a href="../prediksiLaporan/Admin/Login.html" id="loginLink" class="nav-link button-login"><i class="fas fa-sign-in-alt"></i> Login</a>
+        <a href="../prediksiLaporan/Admin/DashboardAdmin.html" id="adminLink" class="nav-link" style="display: none;"><i class="fas fa-clipboard-list"></i> Laporan Masuk</a>
+      </div>
+      <div class="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
       </div>
     </div>
 
     <div class="bannercontent">          
-      <h1>Analisis Laporan</h1>
-      <h1>Sampah dan Banjir</h1>
-      <p class="centered-text">Melalui CRM yang mengintergrasikan seluruh kanal pengaduan resmi Pemprov DKI Jakarta.</p>
-      <a href="../prediksiLaporan/Dashboard/dashboard.html" class="button">Lihat Sekarang</a>
+      <h1 class="title-fade">Analisis Laporan</h1>
+      <h1 class="title-fade">Sampah dan Banjir</h1>
+      <p class="centered-text fade-in">Melalui CRM yang mengintergrasikan seluruh kanal pengaduan resmi Pemprov DKI Jakarta.</p>
+      <a href="../prediksiLaporan/Dashboard/dashboard.html" class="button pulse-btn"><i class="fas fa-arrow-right"></i> Lihat Sekarang</a>
     </div>
-  </div>
+    
+    <div class="wave-container">
+      <svg class="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+        <path fill="#ffffff" fill-opacity="1" d="M0,192L48,176C96,160,192,128,288,133.3C384,139,480,181,576,186.7C672,192,768,160,864,138.7C960,117,1056,107,1152,117.3C1248,128,1344,160,1392,176L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+      </svg>
+    </div>
+  </header>
 
-  <div class="contentForm">
-    <h2>Lapor Kejadian Banjir dan Sampah</h2>
-    <p>Konten lapor kejadian di Jakarta</p>
-    <a href="../prediksiLaporan/Lapor/Form.html" class="button">Lapor</a>
-  </div>
+  <section class="contentForm" id="laporSection">
+    <div class="container">
+      <div class="info-card">
+        <div class="card-icon">
+          <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <div class="card-content">
+          <h2>Lapor Kejadian Banjir dan Sampah</h2>
+          <p>Bantu kami memantau dan mengatasi permasalahan lingkungan di Jakarta. Laporkan kejadian banjir atau permasalahan sampah di sekitar Anda dengan mudah dan cepat.</p>
+          <div class="features">
+            <div class="feature">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>Pelaporan Berbasis Lokasi</span>
+            </div>
+            <div class="feature">
+              <i class="fas fa-camera"></i>
+              <span>Unggah Foto Kejadian</span>
+            </div>
+            <div class="feature">
+              <i class="fas fa-clock"></i>
+              <span>Respons Cepat</span>
+            </div>
+          </div>
+          <a href="../prediksiLaporan/Lapor/Form.html" class="button"><i class="fas fa-exclamation-circle"></i> Buat Laporan Baru</a>
+        </div>
+      </div>
+      
+      <div class="stats-container">
+        <div class="stat-item">
+          <div class="stat-number" id="totalLaporan">0</div>
+          <div class="stat-label">Total Laporan</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" id="laporanDiproses">0</div>
+          <div class="stat-label">Sedang Diproses</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" id="laporanSelesai">0</div>
+          <div class="stat-label">Selesai Ditangani</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <div class="contentData">
-    <h1>Jelajahi Data Kejadian Banjir</h1>
-    <p>Akses data kejadian banjir yang tercatat untuk memahami sebaran dan tingkat keparahan.</p>
-    <a href="../prediksiLaporan/Dataset/DataKejadianBanjir.html" class="button">Data</a>
-  </div>
+  <section class="contentData">
+    <h1 class="scroll-reveal">Jelajahi Data Kejadian Banjir</h1>
+    <p class="scroll-reveal">Akses data kejadian banjir yang tercatat untuk memahami sebaran dan tingkat keparahan.</p>
+    <a href="../prediksiLaporan/Dataset/DataKejadianBanjir.html" class="button scroll-reveal"><i class="fas fa-database"></i> Lihat Data</a>
+    
+    <div class="data-preview">
+      <div class="data-card scroll-reveal">
+        <div class="card-header">
+          <i class="fas fa-map-marked-alt"></i>
+          <h3>Peta Sebaran</h3>
+        </div>
+        <div class="card-body">
+          <p>Visualisasi sebaran banjir di Jakarta</p>
+        </div>
+      </div>
+      <div class="data-card scroll-reveal">
+        <div class="card-header">
+          <i class="fas fa-chart-bar"></i>
+          <h3>Statistik Bulanan</h3>
+        </div>
+        <div class="card-body">
+          <p>Analisis tren kejadian per bulan</p>
+        </div>
+      </div>
+      <div class="data-card scroll-reveal">
+        <div class="card-header">
+          <i class="fas fa-file-download"></i>
+          <h3>Unduh Data</h3>
+        </div>
+        <div class="card-body">
+          <p>Akses dataset lengkap</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <div class="footer">
-    <p>&copy; 2023 Nama Perusahaan. Semua Hak Dilindungi.</p>
-  </div>
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>JSC Jakarta</h3>
+        <p>Melayani masyarakat Jakarta untuk lingkungan yang lebih baik dan bebas banjir.</p>
+        <div class="social-icons">
+          <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Tautan Cepat</h3>
+        <ul class="footer-links">
+          <li><a href="../prediksiLaporan/Dashboard/dashboard.html">Dashboard</a></li>
+          <li><a href="../prediksiLaporan/Lapor/Form.html">Buat Laporan</a></li>
+          <li><a href="../prediksiLaporan/Dataset/DataKejadianBanjir.html">Data Banjir</a></li>
+          <li><a href="#">Tentang Kami</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Kontak</h3>
+        <ul class="contact-info">
+          <li><i class="fas fa-map-marker-alt"></i> Jl. Medan Merdeka Selatan No.8-9, Jakarta Pusat</li>
+          <li><i class="fas fa-phone"></i> (021) 3822255</li>
+          <li><i class="fas fa-envelope"></i> info@jscjakarta.id</li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Berlangganan</h3>
+        <p>Dapatkan informasi terbaru tentang layanan kami</p>
+        <form class="subscribe-form">
+          <input type="email" placeholder="Email Anda" required>
+          <button type="submit"><i class="fas fa-paper-plane"></i></button>
+        </form>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; 2023 JSC Jakarta. Semua Hak Dilindungi.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Kebijakan Privasi</a>
+        <a href="#">Syarat & Ketentuan</a>
+      </div>
+    </div>
+  </footer>
 
-  <script type="module">
-    import { handleNavbarState } from './navbarHandler.js';
-    handleNavbarState();
-  </script>
-  
+  <a href="#" class="back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+  </a>
+
+  <script src="../prediksiLaporan/Landing/scriptLandingPage.js"></script>
 </body>
 </html>
