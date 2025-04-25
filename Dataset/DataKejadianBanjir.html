@@ -4,7 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Data Kejadian Banjir Tahun 2023</title>
-
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   
@@ -12,15 +17,136 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
   <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css" />
 
+  <!-- Custom CSS -->
   <link rel="stylesheet" href="styleDataset.css" />
+  <link rel="stylesheet" href="../Landing/styleLandingPage.css">
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyChiFCS81APiDS4si0ihl6pmndmaps8n-I",
+      authDomain: "website-prediksi-laporan.firebaseapp.com",
+      projectId: "website-prediksi-laporan",
+      storageBucket: "website-prediksi-laporan.firebasestorage.app",
+      messagingSenderId: "239617567465",
+      appId: "1:239617567465:web:c6a585260889e7e3411e78",
+      measurementId: "G-E1JW1GSGW5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const ADMIN_UID = "quTtVs8tqVZtThpSqxjjCM6Fazh2";
+
+    onAuthStateChanged(auth, (user) => {
+      const loginLink = document.getElementById("loginLink");
+      const adminLink = document.getElementById("adminLink");
+
+      if (user && user.uid === ADMIN_UID && localStorage.getItem("adminLoggedIn")) {
+        loginLink.style.display = "none";
+        adminLink.style.display = "inline-block";
+      } else {
+        loginLink.style.display = "inline-block";
+        adminLink.style.display = "none";
+        localStorage.removeItem("adminLoggedIn");
+      }
+    });
+  </script>
 </head>
+
 <body>
-  <div class="container mt-5">
-    <h2 class="mb-4 text-center">Tabel Data Kejadian Banjir Tahun 2023</h2>
-    <div id="data" class="table-responsive">
-      <p>Loading data...</p>
+  <!-- Navbar -->
+  <header>
+    <div class="navbar">
+      <div class="logo-container">
+        <a href="../index.html">
+          <img src="../Landing/LogoJSC.png" alt="Logo" class="logo-img">
+        </a>
+      </div>
+      <div class="nav-links">
+        <a href="../Dashboard/dashboard.html" class="nav-link"><i class="fas fa-chart-line"></i> Dashboard</a>
+        <a href="../Lapor/Form.html" class="nav-link"><i class="fas fa-exclamation-circle"></i> Lapor</a>
+        <a href="../Dataset/DataKejadianBanjir.html" class="nav-link active"><i class="fas fa-water"></i> Kejadian Banjir</a>
+        <a href="../Admin/Login.html" id="loginLink" class="nav-link button-login"><i class="fas fa-sign-in-alt"></i> Login</a>
+        <a href="../Admin/DashboardAdmin.html" id="adminLink" class="nav-link" style="display: none;"><i class="fas fa-clipboard-list"></i> Laporan Masuk</a>
+      </div>
+      <div class="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="page-container">
+    <div class="container mt-5 pt-5">
+      <h2 class="page-title">Data Kejadian Banjir Tahun 2023</h2>
+      <div id="data" class="table-responsive">
+        <p>Loading data...</p>
+      </div>
     </div>
   </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>Jakarta Smart City</h3>
+        <p>Melayani masyarakat Jakarta untuk lingkungan yang lebih baik dan bebas banjir.</p>
+        <div class="social-icons">
+          <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Tautan Cepat</h3>
+        <ul class="footer-links">
+          <li><a href="../Dashboard/dashboard.html">Dashboard</a></li>
+          <li><a href="../Lapor/Form.html">Buat Laporan</a></li>
+          <li><a href="../Dataset/DataKejadianBanjir.html">Data Banjir</a></li>
+          <li><a href="#">Tentang Kami</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Kontak</h3>
+        <ul class="contact-info">
+          <li><i class="fas fa-map-marker-alt"></i> Jl. Medan Merdeka Selatan No.8-9, Jakarta Pusat</li>
+          <li><i class="fas fa-phone"></i> (021) 3822255</li>
+          <li><i class="fas fa-envelope"></i> info@jscjakarta.id</li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Berlangganan</h3>
+        <p>Dapatkan informasi terbaru tentang layanan kami</p>
+        <form class="subscribe-form">
+          <input type="email" placeholder="Email Anda" required>
+          <button type="submit"><i class="fas fa-paper-plane"></i></button>
+        </form>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; 2023 Jakarta Smart City. Semua Hak Dilindungi.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Kebijakan Privasi</a>
+        <a href="#">Syarat & Ketentuan</a>
+      </div>
+    </div>
+  </footer>
+
+  <a href="#" class="back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+  </a>
 
   <!-- jQuery & Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -38,5 +164,6 @@
 
   <!-- Custom JS -->
   <script src="customDataset.js"></script>
+  <script src="../Landing/scriptLandingPage.js"></script>
 </body>
 </html>

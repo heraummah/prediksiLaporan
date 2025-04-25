@@ -1,0 +1,319 @@
+"""
+DATA CLEANING DAN NORMALISASI
+Script untuk membersihkan dan menormalisasi data dengan Python
+"""
+
+import pandas as pd
+import numpy as np
+import mysql.connector
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Fungsi untuk koneksi ke database MySQL (jika data disimpan di MySQL)
+def connect_to_mysql(host, user, password, database):
+    """
+    Membuat koneksi ke database MySQL
+    """
+    try:
+        connection = mysql.connector.connect(
+            host=host,
+            user=user,
+            password=password,
+            database=database
+        )
+        if connection.is_connected():
+            print(f"Berhasil terhubung ke database MySQL: {database}")
+            return connection
+    except mysql.connector.Error as e:
+        print(f"Error saat menghubungkan ke MySQL: {e}")
+        return None
+
+# Fungsi untuk mengambil data dari MySQL
+def get_data_from_mysql(connection, table_name):
+    """
+    Mengambil data dari tabel MySQL
+    """
+    try:
+        query = f"SELECT * FROM {table_name}"
+        df = pd.read_sql(query, connection)
+        print(f"Berhasil mengambil {len(df)} baris data dari tabel {table_name}")
+        return df
+    except Exception as e:
+        print(f"Error saat mengambil data: {e}")
+        return None
+
+# Fungsi untuk load data dari file (CSV, Excel, dll)
+def load_data_from_file(file_path):
+    """
+    Load data dari file
+    """
+    try:
+        # Deteksi jenis file berdasarkan ekstensi
+        if file_path.endswith('.csv'):
+            df = pd.read_csv(file_path)
+        elif file_path.endswith(('.xls', '.xlsx')):
+            df = pd.read_excel(file_path)
+        else:
+            raise ValueError("Format file tidak didukung. Gunakan CSV atau Excel.")
+        
+        print(f"Berhasil memuat {len(df)} baris data dari file {file_path}")
+        return df
+    except Exception as e:
+        print(f"Error saat memuat file: {e}")
+        return None
+
+# Fungsi untuk cleaning kolom kota dan kota_kabupaten_non_geotag
+def clean_city_columns(df):
+    """
+    Mengisi nilai kosong pada kolom kota dari kota_kabupaten_non_geotag dan sebaliknya
+    """
+    # Pastikan kolom yang dibutuhkan ada dalam dataframe
+    required_columns = ["kota", "kota_kabupaten_non_geotag"]
+    missing_columns = [col for col in required_columns if col not in df.columns]
+    
+    if missing_columns:
+        print(f"Kolom yang dibutuhkan tidak ditemukan: {missing_columns}")
+        return df
+    
+    # Simpan jumlah nilai kosong sebelum cleaning
+    null_before = {
+        'kota': df['kota'].isna().sum(),
+        'kota_kabupaten_non_geotag': df['kota_kabupaten_non_geotag'].isna().sum()
+    }
+    
+    print("\nJumlah nilai kosong sebelum cleaning:")
+    print(f"- kota: {null_before['kota']}")
+    print(f"- kota_kabupaten_non_geotag: {null_before['kota_kabupaten_non_geotag']}")
+    
+    # Mengisi nilai kosong pada kolom kota dari kota_kabupaten_non_geotag
+    df['kota'] = df.apply(
+        lambda row: row['kota_kabupaten_non_geotag'] 
+        if pd.isna(row['kota']) and not pd.isna(row['kota_kabupaten_non_geotag']) 
+        else row['kota'], 
+        axis=1
+    )
+    
+    # Mengisi nilai kosong pada kolom kota_kabupaten_non_geotag dari kota
+    df['kota_kabupaten_non_geotag'] = df.apply(
+        lambda row: row['kota'] 
+        if pd.isna(row['kota_kabupaten_non_geotag']) and not pd.isna(row['kota']) 
+        else row['kota_kabupaten_non_geotag'], 
+        axis=1
+    )
+    
+    # Simpan jumlah nilai kosong setelah cleaning
+    null_after = {
+        'kota': df['kota'].isna().sum(),
+        'kota_kabupaten_non_geotag': df['kota_kabupaten_non_geotag'].isna().sum()
+    }
+    
+    print("\nJumlah nilai kosong setelah cleaning:")
+    print(f"- kota: {null_after['kota']}")
+    print(f"- kota_kabupaten_non_geotag: {null_after['kota_kabupaten_non_geotag']}")
+    
+    print(f"\nBerhasil mengisi {null_before['kota'] - null_after['kota']} nilai kosong pada kolom kota")
+    print(f"Berhasil mengisi {null_before['kota_kabupaten_non_geotag'] - null_after['kota_kabupaten_non_geotag']} nilai kosong pada kolom kota_kabupaten_non_geotag")
+    
+    return df
+
+# Fungsi untuk normalisasi data numerik
+def normalize_data(df, columns_to_normalize, method='minmax'):
+    """
+    Melakukan normalisasi data pada kolom-kolom numerik
+    
+    Parameters:
+    -----------
+    df : pandas DataFrame
+        DataFrame yang akan dinormalisasi
+    columns_to_normalize : list
+        Daftar kolom yang akan dinormalisasi
+    method : str, default 'minmax'
+        Metode normalisasi, bisa 'minmax' atau 'zscore'
+        
+    Returns:
+    --------
+    df : pandas DataFrame
+        DataFrame yang sudah dinormalisasi
+    scalers : dict
+        Dictionary berisi objek scaler untuk setiap kolom
+    """
+    # Cek kolom yang ada dalam dataframe
+    missing_columns = [col for col in columns_to_normalize if col not in df.columns]
+    if missing_columns:
+        print(f"Kolom yang akan dinormalisasi tidak ditemukan: {missing_columns}")
+        columns_to_normalize = [col for col in columns_to_normalize if col in df.columns]
+    
+    if not columns_to_normalize:
+        print("Tidak ada kolom yang akan dinormalisasi")
+        return df, {}
+    
+    # Cek apakah kolom numerik
+    non_numeric_cols = [col for col in columns_to_normalize if not pd.api.types.is_numeric_dtype(df[col])]
+    if non_numeric_cols:
+        print(f"Kolom berikut bukan numerik dan tidak akan dinormalisasi: {non_numeric_cols}")
+        columns_to_normalize = [col for col in columns_to_normalize if col not in non_numeric_cols]
+    
+    if not columns_to_normalize:
+        print("Tidak ada kolom numerik yang akan dinormalisasi")
+        return df, {}
+    
+    # Buat dictionary untuk menyimpan scaler
+    scalers = {}
+    
+    # Lakukan normalisasi pada setiap kolom
+    for col in columns_to_normalize:
+        # Simpan sementara data kosong
+        null_indices = df[col].isna()
+        
+        # Pilih scaler berdasarkan metode
+        if method.lower() == 'minmax':
+            scaler = MinMaxScaler()
+            normalized_name = f"{col}_normalized_minmax"
+        elif method.lower() == 'zscore':
+            scaler = StandardScaler()
+            normalized_name = f"{col}_normalized_zscore"
+        else:
+            print(f"Metode '{method}' tidak dikenal. Menggunakan MinMaxScaler.")
+            scaler = MinMaxScaler()
+            normalized_name = f"{col}_normalized_minmax"
+        
+        # Fit dan transform data
+        # Reshape karena scaler membutuhkan input 2D
+        values = df.loc[~null_indices, col].values.reshape(-1, 1)
+        normalized_values = scaler.fit_transform(values).flatten()
+        
+        # Buat kolom baru untuk data yang dinormalisasi
+        df.loc[~null_indices, normalized_name] = normalized_values
+        
+        # Simpan scaler untuk penggunaan di masa depan
+        scalers[col] = scaler
+        
+        print(f"Kolom {col} berhasil dinormalisasi ke kolom {normalized_name}")
+        
+        # Visualisasi distribusi sebelum dan sesudah normalisasi
+        plt.figure(figsize=(12, 5))
+        
+        plt.subplot(1, 2, 1)
+        sns.histplot(df[col].dropna(), kde=True)
+        plt.title(f'Distribusi {col} (Sebelum Normalisasi)')
+        
+        plt.subplot(1, 2, 2)
+        sns.histplot(df[normalized_name].dropna(), kde=True)
+        plt.title(f'Distribusi {normalized_name} (Setelah Normalisasi)')
+        
+        plt.tight_layout()
+        plt.savefig(f'normalisasi_{col}.png')
+        plt.close()
+        
+    return df, scalers
+
+# Fungsi untuk menyimpan data yang telah dibersihkan
+def save_cleaned_data(df, output_path=None, connection=None, table_name=None):
+    """
+    Menyimpan data yang telah dibersihkan ke file atau database
+    """
+    if output_path:
+        # Deteksi format berdasarkan ekstensi
+        if output_path.endswith('.csv'):
+            df.to_csv(output_path, index=False)
+        elif output_path.endswith(('.xls', '.xlsx')):
+            df.to_excel(output_path, index=False)
+        else:
+            print("Format tidak didukung. Menyimpan sebagai CSV...")
+            df.to_csv(f"{output_path}.csv", index=False)
+        
+        print(f"Data berhasil disimpan ke {output_path}")
+    
+    if connection and table_name:
+        try:
+            # Buat tabel baru atau ganti yang sudah ada
+            from sqlalchemy import create_engine
+            
+            # Ambil informasi koneksi
+            host = connection.server_host
+            user = connection.user
+            password = connection._password
+            database = connection.database
+            
+            # Buat engine SQLAlchemy
+            engine = create_engine(f"mysql+mysqlconnector://{user}:{password}@{host}/{database}")
+            
+            # Simpan dataframe ke SQL
+            df.to_sql(name=table_name, con=engine, if_exists='replace', index=False)
+            
+            print(f"Data berhasil disimpan ke tabel {table_name} di database MySQL")
+        except Exception as e:
+            print(f"Error saat menyimpan data ke MySQL: {e}")
+
+# Main function
+def main():
+    # Tentukan sumber data (pilih salah satu)
+    data_source = 'file'  # 'file' atau 'mysql'
+    
+    if data_source == 'file':
+        # Load data dari file
+        file_path = 'path_to_your_data.csv'  # Ganti dengan path file Anda
+        df = load_data_from_file(file_path)
+    else:
+        # Load data dari MySQL
+        mysql_config = {
+            'host': 'localhost',
+            'user': 'username',
+            'password': 'password',
+            'database': 'nama_database'
+        }
+        connection = connect_to_mysql(**mysql_config)
+        if not connection:
+            return
+        
+        table_name = 'nama_tabel'  # Ganti dengan nama tabel Anda
+        df = get_data_from_mysql(connection, table_name)
+    
+    if df is None:
+        print("Gagal memuat data. Program berhenti.")
+        return
+    
+    # Tampilkan informasi data awal
+    print("\n--- INFORMASI DATA AWAL ---")
+    print(f"Jumlah baris: {len(df)}")
+    print(f"Jumlah kolom: {len(df.columns)}")
+    print("\nDaftar kolom:")
+    for col in df.columns:
+        print(f"- {col}: {df[col].dtype}")
+    
+    print("\nJumlah nilai kosong per kolom:")
+    print(df.isna().sum())
+    
+    # Cleaning kolom kota dan kota_kabupaten_non_geotag
+    df = clean_city_columns(df)
+    
+    # Normalisasi kolom numerik (contoh)
+    # Ganti dengan kolom numerik yang ingin dinormalisasi
+    columns_to_normalize = [
+        'column1',  # Ganti dengan nama kolom numerik Anda
+        'column2',  # Ganti dengan nama kolom numerik Anda
+    ]
+    
+    # Pilih metode normalisasi: 'minmax' atau 'zscore'
+    df, scalers = normalize_data(df, columns_to_normalize, method='minmax')
+    
+    # Tampilkan informasi data setelah cleaning dan normalisasi
+    print("\n--- INFORMASI DATA SETELAH CLEANING DAN NORMALISASI ---")
+    print(f"Jumlah baris: {len(df)}")
+    print(f"Jumlah kolom: {len(df.columns)}")
+    
+    print("\nJumlah nilai kosong per kolom:")
+    print(df.isna().sum())
+    
+    # Simpan data yang telah dibersihkan (pilih salah satu atau keduanya)
+    # Ke file
+    save_cleaned_data(df, output_path='cleaned_data.csv')
+    
+    # Ke database MySQL (jika menggunakan MySQL)
+    if data_source == 'mysql' and connection:
+        save_cleaned_data(df, connection=connection, table_name='cleaned_data')
+        connection.close()
+
+if __name__ == "__main__":
+    main()

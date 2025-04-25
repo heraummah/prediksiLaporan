@@ -1,84 +1,148 @@
+:root {
+  --primary-color: #264F73;
+  --secondary-color: #FF7350;
+  --accent-color: #4AB4FF;
+  --text-color: #333333;
+  --light-text: #666666;
+  --white: #ffffff;
+  --light-bg: #f8f9fa;
+  --border-radius: 10px;
+  --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
+}
+
 body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    background-color: #ffffff;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .container {
-    max-width: 600px;
-    margin: 40px auto;
-    padding: 30px;
-    background-color: #f8f9fa;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(2, 83, 190, 0.1);
-  }
-  
-  h2 {
-    text-align: center;
-    color: #000;
-    font-weight: 700;
-    margin-bottom: 25px;
-  }
-  
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 6px;
-    color: #0253BE;
-    font-weight: 600;
-  }
-  
-  input, select, textarea {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-family: inherit;
-  }
-  
-  input:focus, select:focus, textarea:focus {
-    outline: none;
-    border-color: #0253BE;
-    box-shadow: 0 0 0 2px rgba(2, 83, 190, 0.2);
-  }
-  
-  .submit-btn {
-    display: block;
-    width: 100%;
-    background-color: #FF7350;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 999px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .submit-btn:hover {
-    background-color: #e35f3d;
-  }
+  font-family: 'Poppins', 'Plus Jakarta Sans', sans-serif;
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: var(--white);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
 
-  /* Tambahkan style ini ke styleForm.css Anda jika diperlukan */
+/* Tambahan untuk layout halaman */
+.page-container {
+  padding-top: 100px;
+  padding-bottom: 60px;
+  min-height: calc(100vh - 500px);
+  background-color: var(--light-bg);
+  /* Background image dihapus dari sini */
+}
 
+.form-container {
+  max-width: 600px;
+  margin: 0 auto 40px;
+  padding: 30px;
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  transition: var(--transition);
+}
+
+.form-container:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+}
+
+h2 {
+  text-align: center;
+  color: var(--primary-color);
+  font-weight: 700;
+  margin-bottom: 25px;
+  position: relative;
+  padding-bottom: 15px;
+}
+
+h2:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background-color: var(--secondary-color);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: var(--transition);
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(74, 180, 255, 0.2);
+}
+
+.submit-btn {
+  display: block;
+  width: 100%;
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 4px 10px rgba(255, 115, 80, 0.3);
+  margin-top: 30px;
+}
+
+.submit-btn:hover {
+  background-color: #e35f3d;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(255, 115, 80, 0.4);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 5px rgba(255, 115, 80, 0.3);
+}
+
+/* File info styling */
 .file-info {
-  margin-top: 5px;
-  font-size: 14px;
-  color: #666;
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: var(--light-text);
+  background-color: rgba(74, 180, 255, 0.05);
+  padding: 12px;
+  border-radius: 8px;
+  border-left: 3px solid var(--accent-color);
+}
+
+.file-info p {
+  margin: 0 0 8px 0;
 }
 
 .file-info a {
-  color: #0253BE;
+  color: var(--accent-color);
   text-decoration: none;
+  font-weight: 500;
+  transition: var(--transition);
 }
 
 .file-info a:hover {
+  color: var(--primary-color);
   text-decoration: underline;
 }
 
@@ -88,16 +152,136 @@ details {
 
 summary {
   cursor: pointer;
-  color: #0253BE;
+  color: var(--primary-color);
   font-weight: 500;
+  transition: var(--transition);
+}
+
+summary:hover {
+  color: var(--secondary-color);
 }
 
 details ol {
-  margin-top: 8px;
-  padding-left: 20px;
+  margin-top: 10px;
+  margin-bottom: 0;
+  padding-left: 25px;
 }
 
 details li {
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+  color: var(--text-color);
 }
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+  .form-container {
+    width: 90%;
+    padding: 20px;
+  }
   
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  input, select, textarea {
+    padding: 10px 12px;
+  }
+  
+  .file-info {
+    padding: 10px;
+  }
+}
+
+/* Input validation visual cues */
+input:invalid, select:invalid, textarea:invalid {
+  border-color: #ffcccc;
+}
+
+input:valid, select:valid, textarea:valid {
+  border-color: #ccffcc;
+}
+
+/* Disabled button styling */
+.submit-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* SweetAlert2 customizations */
+.swal2-popup {
+  font-family: 'Poppins', 'Plus Jakarta Sans', sans-serif;
+  border-radius: 15px;
+}
+
+.swal2-title {
+  color: var(--primary-color) !important;
+}
+
+.swal2-confirm {
+  background-color: var(--accent-color) !important;
+}
+
+.swal2-cancel {
+  background-color: #dddddd !important;
+  color: var(--text-color) !important;
+}
+
+/* Tambahkan CSS berikut ke file styleForm.css yang sudah ada */
+
+/* Styling untuk upload gambar dan preview */
+.image-preview {
+  margin-top: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+#preview-img {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: var(--transition);
+}
+
+/* Styling untuk input file */
+input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  background-color: rgba(74, 180, 255, 0.05);
+  transition: var(--transition);
+}
+
+input[type="file"]:hover {
+  border-color: var(--accent-color);
+  background-color: rgba(74, 180, 255, 0.1);
+}
+
+input[type="file"]:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(74, 180, 255, 0.2);
+}
+
+/* Custom file input styling */
+input[type="file"]::file-selector-button {
+  padding: 8px 15px;
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+  font-family: inherit;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+input[type="file"]::file-selector-button:hover {
+  background-color: #3a90cc;
+  transform: translateY(-2px);
+}

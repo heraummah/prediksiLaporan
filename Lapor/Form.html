@@ -5,84 +5,210 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Form Laporan</title>
 
-  <!-- Font Jakarta -->
+  <!-- Font Jakarta & Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <!-- Style -->
+  <!-- CSS -->
   <link rel="stylesheet" href="styleForm.css" />
+  <link rel="stylesheet" href="../Landing/styleLandingPage.css">
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyChiFCS81APiDS4si0ihl6pmndmaps8n-I",
+      authDomain: "website-prediksi-laporan.firebaseapp.com",
+      projectId: "website-prediksi-laporan",
+      storageBucket: "website-prediksi-laporan.firebasestorage.app",
+      messagingSenderId: "239617567465",
+      appId: "1:239617567465:web:c6a585260889e7e3411e78",
+      measurementId: "G-E1JW1GSGW5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const ADMIN_UID = "quTtVs8tqVZtThpSqxjjCM6Fazh2";
+
+    onAuthStateChanged(auth, (user) => {
+      const loginLink = document.getElementById("loginLink");
+      const adminLink = document.getElementById("adminLink");
+
+      if (user && user.uid === ADMIN_UID && localStorage.getItem("adminLoggedIn")) {
+        loginLink.style.display = "none";
+        adminLink.style.display = "inline-block";
+      } else {
+        loginLink.style.display = "inline-block";
+        adminLink.style.display = "none";
+        localStorage.removeItem("adminLoggedIn");
+      }
+    });
+  </script>
 </head>
 <body>
-  <div class="container">
-    <h2>Form Laporan Masyarakat</h2>
-    <form id="laporForm">
-      <div class="form-group">
-        <label for="nama">Nama Lengkap</label>
-        <input type="text" id="nama" name="nama" required />
+  <!-- Navbar -->
+  <header>
+    <div class="navbar">
+      <div class="logo-container">
+        <a href="../index.html">
+          <img src="../Landing/LogoJSC.png" alt="Logo" class="logo-img">
+        </a>
       </div>
-
-      <div class="form-group">
-        <label for="jenis">Jenis Laporan</label>
-        <select id="jenis" name="jenis" required>
-          <option value="">-- Pilih Jenis --</option>
-          <option value="Banjir">Banjir</option>
-          <option value="Sampah">Sampah</option>
-        </select>
+      <div class="nav-links">
+        <a href="../Dashboard/dashboard.html" class="nav-link"><i class="fas fa-chart-line"></i> Dashboard</a>
+        <a href="../Lapor/Form.html" class="nav-link active"><i class="fas fa-exclamation-circle"></i> Lapor</a>
+        <a href="../Dataset/DataKejadianBanjir.html" class="nav-link"><i class="fas fa-water"></i> Kejadian Banjir</a>
+        <a href="../Admin/Login.html" id="loginLink" class="nav-link button-login"><i class="fas fa-sign-in-alt"></i> Login</a>
+        <a href="../Admin/DashboardAdmin.html" id="adminLink" class="nav-link" style="display: none;"><i class="fas fa-clipboard-list"></i> Laporan Masuk</a>
       </div>
-
-      <div class="form-group">
-        <label for="kota">Kota Administrasi</label>
-        <select id="kota" name="kota" required>
-          <option value="">-- Pilih Kota --</option>
-          <option>Jakarta Barat</option>
-          <option>Jakarta Timur</option>
-          <option>Jakarta Utara</option>
-          <option>Jakarta Selatan</option>
-          <option>Jakarta Pusat</option>
-          <option>Kepulauan Seribu</option>
-        </select>
+      <div class="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
       </div>
+    </div>
+  </header>
 
-      <div class="form-group">
-        <label for="alamat">Alamat Lengkap Kejadian</label>
-        <textarea id="alamat" name="alamat" rows="3" required></textarea>
-      </div>
+  <!-- Main Content -->
+  <div class="page-container">
+    <div class="form-container">
+      <h2>Form Laporan Masyarakat</h2>
+      <form id="laporForm" action="process.php" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="nama">Nama Lengkap</label>
+          <input type="text" id="nama" name="nama" required />
+        </div>
 
-      <div class="form-group">
-        <label for="tanggal">Tanggal Kejadian</label>
-        <input type="date" id="tanggal" name="tanggal" required />
-      </div>
+        <div class="form-group">
+          <label for="jenis">Jenis Laporan</label>
+          <select id="jenis" name="jenis" required>
+            <option value="">-- Pilih Jenis --</option>
+            <option value="Banjir">Banjir</option>
+            <option value="Sampah">Sampah</option>
+          </select>
+        </div>
 
-      <div class="form-group">
-        <label for="laporan">Laporan</label>
-        <textarea id="laporan" name="laporan" rows="3" required></textarea>
-      </div>
+        <div class="form-group">
+          <label for="kota">Kota Administrasi</label>
+          <select id="kota" name="kota" required>
+            <option value="">-- Pilih Kota --</option>
+            <option>Jakarta Barat</option>
+            <option>Jakarta Timur</option>
+            <option>Jakarta Utara</option>
+            <option>Jakarta Selatan</option>
+            <option>Jakarta Pusat</option>
+            <option>Kepulauan Seribu</option>
+          </select>
+        </div>
 
-      <div class="form-group">
-        <label for="bukti">Link Bukti (Gambar/File)</label>
-        <input type="url" id="bukti" name="bukti" placeholder="https://drive.google.com/drive/folders/1W_8Ks-dxGizBsYP1mEUKSuN0L7doD2R6?usp=sharing" required />
-        <div class="file-info">
-          <p>Upload gambar/dokumen ke <a href="https://postimages.org/" target="_blank">PostImages</a> atau <a href="https://imgbb.com/" target="_blank">ImgBB</a>, lalu tempel link di sini.</p>
-          <details>
-            <summary>Cara Upload Bukti</summary>
-            <ol>
-              <li>Klik salah satu layanan di atas (PostImages atau ImgBB)</li>
-              <li>Klik "Upload" atau "Start Upload" pada website tersebut</li>
-              <li>Pilih file dari komputer atau smartphone Anda</li>
-              <li>Setelah proses upload selesai, salin link "Direct Link" atau "Image Link"</li>
-              <li>Tempel link tersebut pada kolom di atas</li>
-            </ol>
-          </details>
+        <div class="form-group">
+          <label for="alamat">Alamat Lengkap Kejadian</label>
+          <textarea id="alamat" name="alamat" rows="3" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="tanggal">Tanggal Kejadian</label>
+          <input type="date" id="tanggal" name="tanggal" required />
+        </div>
+
+        <div class="form-group">
+          <label for="laporan">Laporan</label>
+          <textarea id="laporan" name="laporan" rows="3" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="bukti">Bukti (Gambar)</label>
+          <input type="file" id="bukti" name="bukti" accept="image/*" required />
+          <div class="file-info">
+            <p>Upload gambar sebagai bukti laporan (JPG, PNG, GIF)</p>
+            <details>
+              <summary>Ketentuan Upload Bukti</summary>
+              <ol>
+                <li>Ukuran maksimum file adalah 2MB</li>
+                <li>Jenis file yang diperbolehkan: JPG, PNG, atau GIF</li>
+                <li>Pastikan gambar terlihat jelas sebagai bukti yang valid</li>
+                <li>Gambar akan disimpan di server kami dan dapat diakses oleh admin</li>
+              </ol>
+            </details>
+          </div>
+          <div id="image-preview" class="image-preview">
+            <img id="preview-img" src="#" alt="Preview Gambar" style="display: none; max-width: 100%; max-height: 200px; margin-top: 10px;">
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitButton">Kirim Laporan</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>Jakarta Smart City</h3>
+        <p>Melayani masyarakat Jakarta untuk lingkungan yang lebih baik dan bebas banjir.</p>
+        <div class="social-icons">
+          <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
         </div>
       </div>
+      
+      <div class="footer-section">
+        <h3>Tautan Cepat</h3>
+        <ul class="footer-links">
+          <li><a href="../Dashboard/dashboard.html">Dashboard</a></li>
+          <li><a href="../Lapor/Form.html">Buat Laporan</a></li>
+          <li><a href="../Dataset/DataKejadianBanjir.html">Data Banjir</a></li>
+          <li><a href="#">Tentang Kami</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Kontak</h3>
+        <ul class="contact-info">
+          <li><i class="fas fa-map-marker-alt"></i> Jl. Medan Merdeka Selatan No.8-9, Jakarta Pusat</li>
+          <li><i class="fas fa-phone"></i> (021) 3822255</li>
+          <li><i class="fas fa-envelope"></i> info@jscjakarta.id</li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Berlangganan</h3>
+        <p>Dapatkan informasi terbaru tentang layanan kami</p>
+        <form class="subscribe-form">
+          <input type="email" placeholder="Email Anda" required>
+          <button type="submit"><i class="fas fa-paper-plane"></i></button>
+        </form>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; 2023 Jakarta Smart City. Semua Hak Dilindungi.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Kebijakan Privasi</a>
+        <a href="#">Syarat & Ketentuan</a>
+      </div>
+    </div>
+  </footer>
 
-      <button type="submit" class="submit-btn" id="submitButton">Kirim Laporan</button>
-    </form>
-  </div>
+  <a href="#" class="back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+  </a>
 
   <!-- JavaScript -->
   <script src="scriptForm.js"></script>
+  <script src="../Landing/scriptLandingPage.js"></script>
 </body>
 </html>

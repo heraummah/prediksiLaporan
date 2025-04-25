@@ -1,95 +1,200 @@
 /* Halaman */
+:root {
+  --primary-color: #264F73;
+  --secondary-color: #FF7350;
+  --accent-color: #4AB4FF;
+  --text-color: #333333;
+  --light-text: #666666;
+  --white: #ffffff;
+  --light-bg: #f8f9fa;
+  --border-radius: 10px;
+  --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
+}
+
 body {
-    background-color: #ffffff;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 2rem;
-    color: #0a0a0a;
-  }
-  
-  /* Judul */
-  h2 {
-    color: #000000; /* warna hitam */
-    font-weight: 700; /* bold */
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-  
-  /* Tabel DataTables */
-  table.dataTable {
-    width: 100%;
-    border-collapse: collapse !important;
-    background-color: transparent;
-  }
-  
-  /* Header tabel */
-  table.dataTable thead {
-    background-color: #0253BE !important;
-    color: white !important;
-  }
-  
-  table.dataTable thead th {
-    border: none !important;
-    background-color: #0253BE !important;
-    color: white !important;
-  }
-  
-  /* Body tabel: full biru muda */
-  table.dataTable tbody tr {
-    background-color: #d0e7ff !important;
-    color: #000 !important;
-    border: none !important;
-  }
-  
-  table.dataTable tbody tr:nth-child(even) {
-    background-color: #b1d5f8 !important;
-  }
-  
-  table.dataTable tbody td {
-    border: none !important;
-  }
-  
-  /* Hover efek */
-  table.dataTable tbody tr:hover {
-    background-color: #4AB4FF !important;
-    color: white !important;
-  }
-  
-  /* Footer tabel */
-  table.dataTable tfoot {
-    background-color: #4AB4FF !important;
-    color: white !important;
-  }
-  
-  table.dataTable tfoot th {
-    border: none !important;
-  }
-  
-  /* Tombol Export */
-  .dt-buttons .btn {
-    background-color: #FF7350 !important;
-    color: white !important;
-    border-radius: 30px !important;
-    padding: 8px 20px !important;
-    margin-right: 10px;
-    border: none !important;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    font-weight: 600;
-  }
-  
-  .dt-buttons .btn:hover {
-    background-color: #4AB4FF !important;
-    color: white !important;
-  }
-  
-  /* Filter dropdown */
-  tfoot select {
-    width: 100%;
-    font-size: 0.85rem;
-    padding: 5px;
-    border-radius: 8px;
-    border: 1px solid #0253BE;
-    background-color: white;
-    color: #0253BE;
-  }
-  
+  font-family: 'Poppins', Arial, sans-serif;
+  line-height: 1.6;
+  color: var(--text-color);
+  overflow-x: hidden;
+  background-color: var(--white);
+  margin: 0;
+  padding: 0;
+}
+
+/* Tambahan untuk layout halaman */
+.page-container {
+  padding-top: 80px;
+  min-height: calc(100vh - 500px);
+  background-color: var(--light-bg);
+}
+
+/* Judul */
+.page-title {
+  color: var(--primary-color);
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2rem;
+  position: relative;
+  padding-bottom: 15px;
+}
+
+.page-title:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background-color: var(--secondary-color);
+}
+
+/* Tabel DataTables */
+table.dataTable {
+  width: 100%;
+  border-collapse: collapse !important;
+  background-color: transparent;
+  margin-top: 1.5rem !important;
+  margin-bottom: 2rem !important;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+}
+
+/* Header tabel */
+table.dataTable thead {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+table.dataTable thead th {
+  border: none !important;
+  background-color: var(--primary-color) !important;
+  color: white !important;
+  padding: 15px 10px !important;
+  font-weight: 600;
+}
+
+/* Body tabel */
+table.dataTable tbody tr {
+  background-color: #d0e7ff !important;
+  color: var(--text-color) !important;
+  border: none !important;
+  transition: var(--transition);
+}
+
+table.dataTable tbody tr:nth-child(even) {
+  background-color: #b1d5f8 !important;
+}
+
+table.dataTable tbody td {
+  border: none !important;
+  padding: 12px 10px !important;
+}
+
+/* Hover efek */
+table.dataTable tbody tr:hover {
+  background-color: var(--accent-color) !important;
+  color: white !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer tabel */
+table.dataTable tfoot {
+  background-color: var(--accent-color) !important;
+  color: white !important;
+}
+
+table.dataTable tfoot th {
+  border: none !important;
+  padding: 12px 10px !important;
+}
+
+/* Tombol Export */
+.dt-buttons {
+  margin-bottom: 20px !important;
+}
+
+.dt-buttons .btn {
+  background-color: var(--secondary-color) !important;
+  color: white !important;
+  border-radius: 30px !important;
+  padding: 8px 20px !important;
+  margin-right: 10px !important;
+  border: none !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.dt-buttons .btn:hover {
+  background-color: var(--accent-color) !important;
+  color: white !important;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Filter dropdown */
+tfoot select {
+  width: 100%;
+  font-size: 0.85rem;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid var(--primary-color);
+  background-color: white;
+  color: var(--primary-color);
+  transition: var(--transition);
+}
+
+tfoot select:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 2px rgba(255, 115, 80, 0.25);
+}
+
+/* Pagination */
+.dataTables_paginate .paginate_button {
+  border-radius: 20px !important;
+  padding: 5px 12px !important;
+  margin: 0 2px !important;
+  border: none !important;
+  background-color: var(--light-bg) !important;
+  color: var(--text-color) !important;
+  transition: var(--transition);
+}
+
+.dataTables_paginate .paginate_button:hover {
+  background-color: var(--accent-color) !important;
+  color: var(--white) !important;
+}
+
+.dataTables_paginate .paginate_button.current {
+  background-color: var(--primary-color) !important;
+  color: var(--white) !important;
+}
+
+/* Search box */
+.dataTables_filter input {
+  border-radius: 20px !important;
+  border: 1px solid var(--primary-color) !important;
+  padding: 8px 15px !important;
+  margin-left: 8px !important;
+  transition: var(--transition);
+}
+
+.dataTables_filter input:focus {
+  outline: none;
+  border-color: var(--secondary-color) !important;
+  box-shadow: 0 0 0 2px rgba(255, 115, 80, 0.25);
+}
+
+/* Loading state */
+#data p {
+  text-align: center;
+  padding: 20px;
+  font-size: 1.1rem;
+  color: var(--primary-color);
+}
