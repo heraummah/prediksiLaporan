@@ -7,44 +7,6 @@
   <link rel="stylesheet" href="../prediksiLaporan/Landing/styleLandingPage.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyChiFCS81APiDS4si0ihl6pmndmaps8n-I",
-      authDomain: "website-prediksi-laporan.firebaseapp.com",
-      projectId: "website-prediksi-laporan",
-      storageBucket: "website-prediksi-laporan.firebasestorage.app",
-      messagingSenderId: "239617567465",
-      appId: "1:239617567465:web:c6a585260889e7e3411e78",
-      measurementId: "G-E1JW1GSGW5"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    const ADMIN_UID = "quTtVs8tqVZtThpSqxjjCM6Fazh2";
-
-    onAuthStateChanged(auth, (user) => {
-      const loginLink = document.getElementById("loginLink");
-      const adminLink = document.getElementById("adminLink");
-
-      if (user && user.uid === ADMIN_UID && localStorage.getItem("adminLoggedIn")) {
-        loginLink.style.display = "none";
-        adminLink.style.display = "inline-block";
-      } else {
-        loginLink.style.display = "inline-block";
-        adminLink.style.display = "none";
-        localStorage.removeItem("adminLoggedIn");
-      }
-    });
-  </script>
 </head>
 
 <body>
@@ -57,8 +19,7 @@
         <a href="../prediksiLaporan/Dashboard/dashboard.html" class="nav-link"><i class="fas fa-chart-line"></i> Dashboard</a>
         <a href="../prediksiLaporan/Lapor/Form.html" class="nav-link"><i class="fas fa-exclamation-circle"></i> Lapor</a>
         <a href="../prediksiLaporan/Dataset/DataKejadianBanjir.html" class="nav-link"><i class="fas fa-water"></i> Kejadian Banjir</a>
-        <a href="../prediksiLaporan/Admin/Login.html" id="loginLink" class="nav-link button-login"><i class="fas fa-sign-in-alt"></i> Login</a>
-        <a href="../prediksiLaporan/Admin/DashboardAdmin.html" id="adminLink" class="nav-link" style="display: none;"><i class="fas fa-clipboard-list"></i> Laporan Masuk</a>
+        <a href="../prediksiLaporan/Admin/Login.html" class="nav-link button-login"><i class="fas fa-sign-in-alt"></i> Login</a>
       </div>
       <div class="mobile-menu-btn">
         <i class="fas fa-bars"></i>
