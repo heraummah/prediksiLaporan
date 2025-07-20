@@ -6,6 +6,8 @@
   <title>Dashboard Analisis Laporan</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Tambahkan Chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
   <style>
     :root {
       --primary-color: #264F73;
@@ -148,6 +150,169 @@
       text-align: center;
     }
     
+    /* ===== STATS CARDS ===== */
+    .stats-container {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+    
+    .stat-card {
+      flex: 0 0 calc(40% - 30px);
+      max-width: 300px;
+      background-color: var(--white);
+      border-radius: var(--border-radius);
+      padding: 25px;
+      box-shadow: var(--box-shadow);
+      text-align: center;
+      transition: var(--transition);
+      border-left: 5px solid var(--primary-color);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .stat-card:nth-child(2) {
+      border-left-color: var(--secondary-color);
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+      opacity: 0;
+      transform: scale(0.5);
+      transition: var(--transition);
+      z-index: 0;
+    }
+    
+    .stat-card:hover::before {
+      opacity: 1;
+      transform: scale(1);
+    }
+    
+    .stat-icon {
+      position: relative;
+      z-index: 1;
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      color: var(--primary-color);
+    }
+    
+    .stat-card:nth-child(2) .stat-icon {
+      color: var(--secondary-color);
+    }
+    
+    .stat-number {
+      position: relative;
+      z-index: 1;
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 10px;
+    }
+    
+    .stat-card:nth-child(2) .stat-number {
+      color: var(--secondary-color);
+    }
+    
+    .stat-label {
+      position: relative;
+      z-index: 1;
+      font-size: 1rem;
+      color: var(--light-text);
+      font-weight: 500;
+    }
+    
+    .stat-loading {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2;
+    }
+    
+    .stat-loading i {
+      color: var(--primary-color);
+      font-size: 2rem;
+      animation: spin 1.5s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* ===== CHARTS CONTAINER ===== */
+    .charts-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+    
+    .chart-box {
+      flex: 1 1 calc(50% - 15px);
+      min-width: 300px;
+      background-color: var(--white);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      padding: 20px;
+      transition: var(--transition);
+    }
+    
+    .chart-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+    
+    .chart-title {
+      font-size: 1.2rem;
+      color: var(--primary-color);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    
+    .chart-canvas-container {
+      position: relative;
+      height: 300px;
+    }
+    
+    .chart-loading {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.8);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 2;
+    }
+    
+    .chart-loading i {
+      color: var(--primary-color);
+      font-size: 2rem;
+      margin-bottom: 10px;
+      animation: spin 1.5s linear infinite;
+    }
+    
     /* ===== DASHBOARD FRAME ===== */
     .dashboard-frame {
       background-color: var(--primary-color);
@@ -196,7 +361,7 @@
     
     .iframe-container {
       width: 100%;
-      height: 600px;
+      height: 1000px;
       background-color: var(--white);
     }
     
@@ -358,7 +523,7 @@
     
     .footer-bottom {
       max-width: 1200px;
-      margin: 30px auto 0;
+      margin: a30px uto 0;
       padding-top: 20px;
       border-top: 1px solid rgba(255, 255, 255, 0.1);
       display: flex;
@@ -439,6 +604,17 @@
     }
     
     @media (max-width: 768px) {
+      .stats-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .stat-card {
+        flex: 0 0 100%;
+        width: 100%;
+        max-width: 100%;
+      }
+      
       .nav-links {
         position: fixed;
         top: 80px;
@@ -570,6 +746,53 @@
   <!-- Main Content -->
   <div class="main-content">
     
+    <!-- Statistik Cards -->
+    <div class="stats-container">
+      <div class="stat-card">
+        <div class="stat-loading">
+          <i class="fas fa-spinner"></i>
+        </div>
+        <i class="fas fa-file-alt stat-icon"></i>
+        <div class="stat-number" id="totalLaporan">0</div>
+        <div class="stat-label">Jumlah Laporan Masuk</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-loading">
+          <i class="fas fa-spinner"></i>
+        </div>
+        <i class="fas fa-cogs stat-icon"></i>
+        <div class="stat-number" id="sedangDiproses">0</div>
+        <div class="stat-label">Jumlah Laporan Diproses</div>
+      </div>
+    </div>
+    
+    <!-- Charts Container -->
+    <div class="charts-container">
+      <!-- Chart 1: Laporan Sampah per Kota -->
+      <div class="chart-box">
+        <h3 class="chart-title">Jumlah Laporan Sampah Berdasarkan Kota</h3>
+        <div class="chart-canvas-container">
+          <div class="chart-loading">
+            <i class="fas fa-spinner"></i>
+            <span>Memuat data...</span>
+          </div>
+          <canvas id="sampahChart"></canvas>
+        </div>
+      </div>
+      
+      <!-- Chart 2: Laporan Banjir per Kota -->
+      <div class="chart-box">
+        <h3 class="chart-title">Jumlah Laporan Banjir Berdasarkan Kota</h3>
+        <div class="chart-canvas-container">
+          <div class="chart-loading">
+            <i class="fas fa-spinner"></i>
+            <span>Memuat data...</span>
+          </div>
+          <canvas id="banjirChart"></canvas>
+        </div>
+      </div>
+    </div>
+
     <!-- Dashboard Frame -->
     <div class="dashboard-frame">
       <div class="dashboard-header">
@@ -580,6 +803,7 @@
         <div class="dashboard-actions">
           <button id="fullscreenBtn"><i class="fas fa-expand"></i> Layar Penuh</button>
           <button id="refreshBtn"><i class="fas fa-sync-alt"></i> Muat Ulang</button>
+          <button id="refreshStatsBtn"><i class="fas fa-sync"></i> Refresh Statistik</button>
         </div>
       </div>
       <div class="iframe-container">
@@ -654,6 +878,379 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      // Variabel untuk menyimpan instance chart
+      let sampahChart = null;
+      let banjirChart = null;
+      
+      // Fungsi untuk animasi penghitungan
+      function animateValue(obj, start, end, duration) {
+        let startTimestamp = null;
+        const step = (timestamp) => {
+          if (!startTimestamp) startTimestamp = timestamp;
+          const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+          obj.innerHTML = Math.floor(progress * (end - start) + start);
+          if (progress < 1) {
+            window.requestAnimationFrame(step);
+          }
+        };
+        window.requestAnimationFrame(step);
+      }
+      
+      // Fungsi untuk menampilkan loading
+      function showLoading() {
+        const loadingElements = document.querySelectorAll('.stat-loading');
+        loadingElements.forEach(el => {
+          el.style.display = 'flex';
+        });
+      }
+      
+      // Fungsi untuk menyembunyikan loading
+      function hideLoading() {
+        const loadingElements = document.querySelectorAll('.stat-loading');
+        loadingElements.forEach(el => {
+          el.style.display = 'none';
+        });
+      }
+      
+      // Fungsi untuk menampilkan loading chart
+      function showChartLoading() {
+        const chartLoadings = document.querySelectorAll('.chart-loading');
+        chartLoadings.forEach(el => {
+          el.style.display = 'flex';
+        });
+      }
+      
+      // Fungsi untuk menyembunyikan loading chart
+      function hideChartLoading() {
+        const chartLoadings = document.querySelectorAll('.chart-loading');
+        chartLoadings.forEach(el => {
+          el.style.display = 'none';
+        });
+      }
+      
+      // Fungsi untuk membuat chart sampah berdasarkan kota
+      function createSampahChart(data) {
+        const ctx = document.getElementById('sampahChart').getContext('2d');
+        
+        // Jika chart sudah ada, hancurkan dulu
+        if (sampahChart) {
+          sampahChart.destroy();
+        }
+        
+        // Persiapkan data untuk chart
+        const kotaLabels = data.map(item => item.kota);
+        const totalData = data.map(item => item.total);
+        
+        // Warna untuk chart
+        const backgroundColors = [
+          'rgba(255, 99, 132, 0.7)',
+          'rgba(54, 162, 235, 0.7)',
+          'rgba(255, 206, 86, 0.7)',
+          'rgba(75, 192, 192, 0.7)',
+          'rgba(153, 102, 255, 0.7)',
+          'rgba(255, 159, 64, 0.7)'
+        ];
+        
+        // Buat chart baru
+        sampahChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: kotaLabels,
+            datasets: [{
+              label: 'Jumlah Laporan Sampah',
+              data: totalData,
+              backgroundColor: backgroundColors,
+              borderColor: backgroundColors.map(color => color.replace('0.7', '1')),
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  precision: 0
+                }
+              }
+            },
+            plugins: {
+              legend: {
+                display: false
+              },
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    return `Jumlah: ${context.parsed.y} laporan`;
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+      
+      // Fungsi untuk membuat chart sampah berdasarkan kota
+function createSampahChart(data) {
+  const ctx = document.getElementById('sampahChart').getContext('2d');
+  
+  // Jika chart sudah ada, hancurkan dulu
+  if (sampahChart) {
+    sampahChart.destroy();
+  }
+  
+  // Persiapkan data untuk chart
+  const kotaLabels = data.map(item => item.kota);
+  const totalData = data.map(item => item.total);
+  
+  // Warna untuk chart - TEMA HIJAU
+  const backgroundColors = [
+    'rgba(75, 192, 120, 0.7)',  // Hijau muda
+    'rgba(46, 160, 96, 0.7)',   // Hijau sedang
+    'rgba(34, 139, 34, 0.7)',   // Hijau hutan
+    'rgba(0, 128, 0, 0.7)',     // Hijau
+    'rgba(0, 100, 0, 0.7)',     // Hijau tua
+    'rgba(50, 205, 50, 0.7)'    // Hijau lime
+  ];
+  
+  // Buat chart baru
+  sampahChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: kotaLabels,
+      datasets: [{
+        label: 'Jumlah Laporan Sampah',
+        data: totalData,
+        backgroundColor: backgroundColors,
+        borderColor: backgroundColors.map(color => color.replace('0.7', '1')),
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Jumlah Laporan'
+          },
+          ticks: {
+            precision: 0
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: 'Kota Administrasi'
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top',
+          labels: {
+            font: {
+              family: 'Poppins'
+            }
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              return `Jumlah Laporan: ${context.parsed.y}`;
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+// Fungsi untuk membuat chart banjir berdasarkan kota
+function createBanjirChart(data) {
+  const ctx = document.getElementById('banjirChart').getContext('2d');
+  
+  // Jika chart sudah ada, hancurkan dulu
+  if (banjirChart) {
+    banjirChart.destroy();
+  }
+  
+  // Persiapkan data untuk chart
+  const kotaLabels = data.map(item => item.kota);
+  const totalData = data.map(item => item.total);
+  
+  // Warna untuk chart - TEMA BIRU
+  const backgroundColors = [
+    'rgba(54, 162, 235, 0.7)',  // Biru langit
+    'rgba(30, 144, 255, 0.7)',  // Biru dodger
+    'rgba(0, 119, 182, 0.7)',   // Biru sedang
+    'rgba(65, 105, 225, 0.7)',  // Biru royal
+    'rgba(0, 0, 205, 0.7)',     // Biru medium
+    'rgba(25, 25, 112, 0.7)'    // Biru tengah malam
+  ];
+  
+  // Buat chart baru
+  banjirChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: kotaLabels,
+      datasets: [{
+        label: 'Jumlah Laporan Banjir',
+        data: totalData,
+        backgroundColor: backgroundColors,
+        borderColor: backgroundColors.map(color => color.replace('0.7', '1')),
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Jumlah Laporan'
+          },
+          ticks: {
+            precision: 0
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: 'Kota Administrasi'
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top',
+          labels: {
+            font: {
+              family: 'Poppins'
+            }
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              return `Jumlah Laporan: ${context.parsed.y}`;
+            }
+          }
+        }
+      }
+    }
+  });
+}
+      
+      // Fungsi untuk mengambil data statistik dari server
+      async function fetchStatistics() {
+        showLoading();
+        showChartLoading();
+        
+        try {
+          const response = await fetch('get_stats.php');
+          
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          
+          const data = await response.json();
+          
+          if (data.error) {
+            console.error('Error:', data.error);
+            hideLoading();
+            hideChartLoading();
+            return;
+          }
+          
+          // Dapatkan elemen untuk statistik
+          const totalLaporan = document.getElementById('totalLaporan');
+          const sedangDiproses = document.getElementById('sedangDiproses');
+          
+          // Simpan nilai saat ini (untuk refresh)
+          let currentTotal = parseInt(totalLaporan.textContent) || 0;
+          let currentDiproses = parseInt(sedangDiproses.textContent) || 0;
+          
+          // Animasikan perubahan nilai
+          animateValue(totalLaporan, currentTotal, data.totalLaporan, 1500);
+          animateValue(sedangDiproses, currentDiproses, data.sedangDiproses, 1500);
+          
+          // Buat chart untuk data laporan sampah dan banjir
+          createSampahChart(data.sampahByKota);
+          createBanjirChart(data.banjirByKota);
+          
+          hideLoading();
+          hideChartLoading();
+          
+        } catch (error) {
+          console.error('Gagal mengambil data statistik:', error);
+          
+          // Jika gagal, tampilkan pesan error dan sembunyikan loading
+          hideLoading();
+          hideChartLoading();
+          
+          // Tampilkan pesan error yang halus di card
+          const cards = document.querySelectorAll('.stat-card');
+          cards.forEach(card => {
+            const errorMsg = document.createElement('div');
+            errorMsg.className = 'stat-error';
+            errorMsg.textContent = 'Gagal memuat data';
+            errorMsg.style.color = '#f44336';
+            errorMsg.style.fontSize = '0.8rem';
+            errorMsg.style.marginTop = '5px';
+            
+            // Hapus pesan error sebelumnya jika ada
+            const oldError = card.querySelector('.stat-error');
+            if (oldError) {
+              oldError.remove();
+            }
+            
+            card.appendChild(errorMsg);
+            
+            // Hilangkan pesan error setelah 5 detik
+            setTimeout(() => {
+              errorMsg.remove();
+            }, 5000);
+          });
+          
+          // Jika data tidak tersedia, tampilkan data dummy untuk grafik
+          createSampahChart([
+            {kota: 'Jakarta Pusat', total: 78},
+            {kota: 'Jakarta Selatan', total: 124},
+            {kota: 'Jakarta Barat', total: 96},
+            {kota: 'Jakarta Utara', total: 112},
+            {kota: 'Jakarta Timur', total: 108}
+          ]);
+          
+          createBanjirChart([
+            {kota: 'Jakarta Pusat', total: 45},
+            {kota: 'Jakarta Selatan', total: 67},
+            {kota: 'Jakarta Barat', total: 89},
+            {kota: 'Jakarta Utara', total: 123},
+            {kota: 'Jakarta Timur', total: 76}
+          ]);
+        }
+      }
+      
+      // Panggil fungsi untuk mengambil data saat halaman dimuat
+      fetchStatistics();
+      
+      // Refresh data statistik setiap 5 menit
+      const statsRefreshInterval = setInterval(fetchStatistics, 5 * 60 * 1000);
+      
+      // Tombol refresh statistik
+      const refreshStatsBtn = document.getElementById('refreshStatsBtn');
+      if (refreshStatsBtn) {
+        refreshStatsBtn.addEventListener('click', fetchStatistics);
+      }
+      
       // Navigation bar scroll effect
       const navbar = document.querySelector('.navbar');
       const backToTopBtn = document.getElementById('backToTop');
@@ -801,5 +1398,3 @@
       }
     });
   </script>
-</body>
-</html>
